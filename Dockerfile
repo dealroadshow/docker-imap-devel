@@ -1,7 +1,5 @@
 FROM ubuntu:16.04
 
-MAINTAINER antespi@gmail.com
-
 ENV MAILNAME=localdomain.test \
     MAIL_ADDRESS= \
     MAIL_PASS= \
@@ -15,6 +13,7 @@ RUN set -x; \
     && echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-selections \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         postfix \
+        postfix-pcre \
         dovecot-core \
         dovecot-imapd \
         dovecot-lmtpd \

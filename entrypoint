@@ -68,8 +68,8 @@ _account_add() {
         chown -R ${uid}:${gid} "${MAIL_LOCATION}/${domain}/${user}"
     fi
 
-    if ! grep -q "$domain" /etc/postfix/vhost; then
-        echo "$domain" >> /etc/postfix/vhost
+    if ! grep -q "/.*/ $domain" /etc/postfix/vhost; then
+        echo "/.*/ $domain" >> /etc/postfix/vhost
     fi
 
     echo "${login} ${domain}/${user}/" >> /etc/postfix/vmailbox
@@ -107,7 +107,7 @@ fi
 /usr/sbin/postconf -e sender_canonical_maps=regexp:/etc/postfix/sender_canonical_regexp
 /usr/sbin/postconf -e virtual_transport=lmtp:unix:private/dovecot-lmtp
 /usr/sbin/postconf -e mailbox_transport=lmtp:unix:private/dovecot-lmtp
-/usr/sbin/postconf -e virtual_mailbox_domains=/etc/postfix/vhost
+/usr/sbin/postconf -e virtual_mailbox_domains=pcre:/etc/postfix/vhost
 /usr/sbin/postconf -e virtual_mailbox_maps=hash:/etc/postfix/vmailbox
 /usr/sbin/postconf compatibility_level=2
 
